@@ -13,14 +13,10 @@
 #include "xiaomi-sdm660-common.dtsi"
 #include "longcheer/wayne/wayne-common-base.dtsi"
 
+/* sdm660.dtsi jasmine specific diff */
 &firmware {
 	android {
 		/delete-node/ vbmeta;
-		fstab {
-			vendor {
-				mnt_flags = "ro,barrier=1";
-				fsmgr_flags = "wait,slotselect";
-			};
-		};
+		/delete-node/ fstab;
 	};
 };
