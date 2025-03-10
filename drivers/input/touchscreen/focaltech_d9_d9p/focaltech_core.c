@@ -1915,7 +1915,6 @@ static struct i2c_driver fts_ts_driver = {
 #ifdef CONFIG_PM
 		.pm = &fts_dev_pm_ops,
 #endif
-		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 	.id_table = fts_ts_id,
 };
