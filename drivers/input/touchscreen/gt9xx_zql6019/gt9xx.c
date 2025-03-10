@@ -2594,6 +2594,7 @@ static struct i2c_driver goodix_ts_driver = {
 #if !defined(CONFIG_FB) && defined(CONFIG_PM)
 		.pm = &gtp_pm_ops,
 #endif
+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 };
 
