@@ -1680,7 +1680,6 @@ int path_umount(struct path *path, int flags)
 	return ret;
 }
 #endif
-
 /*
  * Now umount can handle mount points as well as block devices.
  * This is important for filesystems which use unnamed block devices.
