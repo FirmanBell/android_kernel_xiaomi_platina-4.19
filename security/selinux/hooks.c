@@ -2479,6 +2479,7 @@ static int check_nnp_nosuid(const struct linux_binprm *bprm,
 		}
 	}
 #endif
+
 	/*
 	 * If the policy enables the nnp_nosuid_transition policy capability,
 	 * then we permit transitions under NNP or nosuid if the
