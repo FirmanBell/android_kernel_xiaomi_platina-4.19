@@ -94,7 +94,7 @@ extern const uint16_t touch_key_array[STOUCH_KEY_NUM];
 #define SMT_PROTOCOL_B 1
 #define SWAKEUP_GESTURE 1
 #if SWAKEUP_GESTURE
-extern const uint16_t sgesture_key_array[];
+extern const uint16_t sgesture_key_array[3];
 #endif
 #define SBOOT_UPDATE_FIRMWARE 0
 #define SBOOT_UPDATE_FIRMWARE_NAME "novatek_ts_fw.bin"

@@ -208,35 +208,6 @@ const uint16_t touch_key_array[STOUCH_KEY_NUM] = {
 static uint8_t bTouchIsAwake = 0;
 
 #if SWAKEUP_GESTURE
-#define GESTURE_EVENT_C 		KEY_TP_GESTURE_C
-#define GESTURE_EVENT_E 		KEY_TP_GESTURE_E
-#define GESTURE_EVENT_M			KEY_TP_GESTURE_M
-#define GESTURE_EVENT_O			KEY_TP_GESTURE_O
-#define GESTURE_EVENT_S 		KEY_TP_GESTURE_S
-#define GESTURE_EVENT_V 		KEY_TP_GESTURE_V
-#define GESTURE_EVENT_W 		KEY_TP_GESTURE_W
-#define GESTURE_EVENT_Z 		KEY_TP_GESTURE_Z
-#define GESTURE_EVENT_SWIPE_UP		KEY_TP_GESTURE_SWIPE_UP
-#define GESTURE_EVENT_SWIPE_DOWN	KEY_TP_GESTURE_SWIPE_DOWN
-#define GESTURE_EVENT_SWIPE_LEFT	KEY_TP_GESTURE_SWIPE_LEFT
-#define GESTURE_EVENT_SWIPE_RIGHT	KEY_TP_GESTURE_SWIPE_RIGHT
-#define GESTURE_EVENT_DOUBLE_CLICK	KEY_WAKEUP
-
-const uint16_t sgesture_key_array[] = {
-	GESTURE_EVENT_C,  //GESTURE_WORD_C
-	GESTURE_EVENT_W,  //GESTURE_WORD_W
-	GESTURE_EVENT_V,  //GESTURE_WORD_V
-	GESTURE_EVENT_DOUBLE_CLICK,//GESTURE_DOUBLE_CLICK
-	GESTURE_EVENT_Z,  //GESTURE_WORD_Z
-	GESTURE_EVENT_M,  //GESTURE_WORD_M
-	GESTURE_EVENT_O,  //GESTURE_WORD_O
-	GESTURE_EVENT_E,  //GESTURE_WORD_E
-	GESTURE_EVENT_S,  //GESTURE_WORD_S
-	GESTURE_EVENT_SWIPE_UP,  //GESTURE_SLIDE_UP
-	GESTURE_EVENT_SWIPE_DOWN,  //GESTURE_SLIDE_DOWN
-	GESTURE_EVENT_SWIPE_LEFT,  //GESTURE_SLIDE_LEFT
-	GESTURE_EVENT_SWIPE_RIGHT,  //GESTURE_SLIDE_RIGHT
-};
 
 // Use for DT2W
 static int allow_dclick = 1;
@@ -835,19 +806,7 @@ static void nvt_flash_proc_deinit(void)
 #endif
 
 #if SWAKEUP_GESTURE
-#define GESTURE_WORD_C          12
-#define GESTURE_WORD_W          13
-#define GESTURE_WORD_V          14
 #define GESTURE_DOUBLE_CLICK    15
-#define GESTURE_WORD_Z          16
-#define GESTURE_WORD_M          17
-#define GESTURE_WORD_O          18
-#define GESTURE_WORD_e          19
-#define GESTURE_WORD_S          20
-#define GESTURE_SLIDE_UP        21
-#define GESTURE_SLIDE_DOWN      22
-#define GESTURE_SLIDE_LEFT      23
-#define GESTURE_SLIDE_RIGHT     24
 /* customized gesture id */
 #define DATA_PROTOCOL           30
 
@@ -879,70 +838,6 @@ void snvt_ts_wakeup_gesture_report(uint8_t gesture_id, uint8_t *data)
 	}
 	
 	SNVT_LOG("gesture_id = %d\n", gesture_id);
-
-	if (allow_gesture) {
-		switch (gesture_id) {
-			case GESTURE_WORD_C:
-				SNVT_LOG("Gesture : Word-C.\n");
-				keycode = sgesture_key_array[0];
-				break;
-			case GESTURE_WORD_W:
-				SNVT_LOG("Gesture : Word-W.\n");
-				keycode = sgesture_key_array[1];
-				break;
-			case GESTURE_WORD_V:
-				SNVT_LOG("Gesture : Word-V.\n");
-				keycode = sgesture_key_array[2];
-				break;
-			case GESTURE_DOUBLE_CLICK:
-				if (allow_dclick) {
-					SNVT_LOG("Gesture : Double Click.\n");
-					keycode = sgesture_key_array[3];
-				}
-				break;
-			case GESTURE_WORD_Z:
-				SNVT_LOG("Gesture : Word-Z.\n");
-				keycode = sgesture_key_array[4];
-				break;
-			case GESTURE_WORD_M:
-				SNVT_LOG("Gesture : Word-M.\n");
-				keycode = sgesture_key_array[5];
-				break;
-			case GESTURE_WORD_O:
-				SNVT_LOG("Gesture : Word-O.\n");
-				keycode = sgesture_key_array[6];
-				break;
-			case GESTURE_WORD_e:
-				SNVT_LOG("Gesture : Word-e.\n");
-				keycode = sgesture_key_array[7];
-				break;
-			case GESTURE_WORD_S:
-				SNVT_LOG("Gesture : Word-S.\n");
-				keycode = sgesture_key_array[8];
-				break;
-			case GESTURE_SLIDE_UP:
-				SNVT_LOG("Gesture : Slide UP.\n");
-				keycode = sgesture_key_array[9];
-				break;
-			case GESTURE_SLIDE_DOWN:
-				SNVT_LOG("Gesture : Slide DOWN.\n");
-				keycode = sgesture_key_array[10];
-				break;
-			case GESTURE_SLIDE_LEFT:
-				SNVT_LOG("Gesture : Slide LEFT.\n");
-				keycode = sgesture_key_array[11];
-				break;
-			case GESTURE_SLIDE_RIGHT:
-				SNVT_LOG("Gesture : Slide RIGHT.\n");
-				keycode = sgesture_key_array[12];
-				break;
-			default:
-				break;
-		}
-	} else if(allow_dclick && gesture_id == GESTURE_DOUBLE_CLICK) {
-                  SNVT_LOG("Gesture : Double Click.\n");
-                  keycode = sgesture_key_array[3];
-	}
 
 	if (keycode > 0) {
 		input_report_key(nts->input_dev, keycode, 1);
@@ -1513,14 +1408,6 @@ static int32_t nvt_ts_probe(struct i2c_client *client, const struct i2c_device_i
 	for (retry = 0; retry < nts->max_button_num; retry++) {
 		input_set_capability(nts->input_dev, EV_KEY, touch_key_array[retry]);
 	}
-#endif
-
-#if SWAKEUP_GESTURE
-	for (retry = 0; retry < ARRAY_SIZE(sgesture_key_array); retry++) {
-		input_set_capability(nts->input_dev, EV_KEY, sgesture_key_array[retry]);
-	}
-	gesture_wakelock = wakeup_source_register(NULL, "poll-wake-lock");
-	screate_tp_nodes();
 #endif
 
 	snprintf(nts->phys, sizeof(nts->phys), "input/nts");
