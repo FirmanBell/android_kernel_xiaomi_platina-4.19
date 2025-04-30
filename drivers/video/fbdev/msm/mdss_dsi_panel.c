@@ -91,6 +91,9 @@ void mdss_dsi_ulps_suspend_enable(bool enable)
 	if (mdss_pinfo)
 		mdss_pinfo->ulps_suspend_enabled = enable;
 }
+#endif
+
+
 #ifdef CONFIG_FB_MSM_MDSS_CUSTOM_FRAMERATE
 unsigned int refresh_rate_cus = CONFIG_FB_MSM_MDSS_DEFAULT_FRAMERATE;
 
